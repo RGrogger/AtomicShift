@@ -1,89 +1,147 @@
 //
 //  GameScene.swift
-//  AtomicShift
+//  Atomic Shift
 //
-//  Created by Ryan Grogger on 4/18/17.
+//  Created by Ryan Grogger on 4/13/17.
 //  Copyright © 2017 Ryan Grogger. All rights reserved.
 //
 
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene,SKPhysicsContactDelegate
+{
+    var positiveWall:SKSpriteNode!
+    var negativeWall:SKSpriteNode!
+    var circle: SKSpriteNode!
+    var stars:SKSpriteNode!
+    var wallSwitch:SKSpriteNode!
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    var count = 0
     
-    override func didMove(to view: SKView) {
+    override func didMove(to view: SKView)
+    {
+        self.physicsWorld.contactDelegate = self
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        createPositiveWall()
+        createNegativeWall()
+        createCircle()
+        createBackground()
+        createSwitch()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        if (count % 2 == 0)
+        {
+            circle.texture = SKTexture(imageNamed: "Negative Charge")
         }
+        else
+        {
+            circle.texture = SKTexture(imageNamed: "Positive Charge")
+        }
+        createGravity()
+        count += 1
+        print("tapped")
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+            if (contact.bodyA.node?.name == "wallSwitch")
+            {
+                print("Wall Switched")
+                positiveWall.name = "negative"
+                contact.bodyA.node?.removeFromParent()
+                createGravity()
+            }
+            else if (contact.bodyB.node?.name == "wallSwitch")
+            {
+                print("Wall Switched")
+                positiveWall.name = "negative"
+                contact.bodyB.node?.removeFromParent()
+                createGravity()
+            }
+            print("didBegin executed")
+    }
+
+    func createGravity()
+    {
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        if ((count % 2 == 0) && (positiveWall.name == "positive"))
+        {
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: 9.8)
+        }
+        else if ((count % 2 == 0) && (positiveWall.name == "negative"))
+        {
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)        }
+        else if ((count % 2 == 1) && (positiveWall.name == "positive"))
+        {
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)
+        }
+        else
+        {
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: 9.8)
+        }
+    }
+
+    func createPositiveWall()
+    {
+        positiveWall = SKSpriteNode(color: UIColor.red, size: (CGSize(width: frame.width, height: frame.height/64)))
+        positiveWall.position = CGPoint(x: frame.midX, y: frame.maxY - 490)
+        positiveWall.physicsBody = SKPhysicsBody(rectangleOf: positiveWall.size)
+        positiveWall.physicsBody?.affectedByGravity = false
+        positiveWall.physicsBody?.isDynamic = false
+        positiveWall.name = "positive"
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
+        addChild(positiveWall)
     }
     
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
+    func createNegativeWall()
+    {
+        negativeWall = SKSpriteNode(color:UIColor.blue, size: (CGSize(width: frame.width, height: frame.height/64)))
+        negativeWall.position = CGPoint(x: frame.midX, y: frame.minY + 466)
+        negativeWall.physicsBody = SKPhysicsBody(rectangleOf: negativeWall.size)
+        negativeWall.physicsBody?.affectedByGravity = false
+        negativeWall.physicsBody?.isDynamic = false
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        addChild(negativeWall)
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+    func createCircle()
+    {
+        circle = SKSpriteNode(imageNamed: "Positive Charge")
+        circle.size = CGSize(width: 50, height: 40)
+        circle.position = CGPoint(x: frame.midX - 250, y: frame.midY)
+        circle.physicsBody = SKPhysicsBody(circleOfRadius: 12)
+        circle.physicsBody?.allowsRotation = false
+        circle.physicsBody?.isDynamic = true
+        
+        addChild(circle)
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    func createBackground()
+    {
+        stars = SKSpriteNode(imageNamed: "background")
+        stars.position = CGPoint(x: frame.midX, y: frame.midY)
+        stars.size = CGSize(width: frame.width, height: frame.height)
+        stars.zPosition = -1
+        
+        addChild(stars)
     }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+
+    func createSwitch()
+    {
+        wallSwitch = SKSpriteNode(imageNamed: "Wall Swap Item")
+        wallSwitch.position = CGPoint(x: frame.midX, y: frame.midY)
+        wallSwitch.size = CGSize(width: 100, height: 75)
+        wallSwitch.physicsBody = SKPhysicsBody(circleOfRadius: 23)
+        wallSwitch.name = "wallSwitch"
+        
+        addChild(wallSwitch)
+        
+        wallSwitch.physicsBody?.affectedByGravity = true
+        wallSwitch.physicsBody?.applyImpulse(CGVector(dx: -10, dy: 0))
+        wallSwitch.physicsBody?.isDynamic = true
     }
 }
