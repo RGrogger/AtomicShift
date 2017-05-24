@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F6D932D1EBB8122002C9866 /* PlayerExplosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F6D932C1EBB8122002C9866 /* PlayerExplosion.sks */; };
 		3F6DE7FD1EA6658D00D0EE75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DE7FC1EA6658D00D0EE75 /* AppDelegate.swift */; };
 		3F6DE7FF1EA6658D00D0EE75 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F6DE7FE1EA6658D00D0EE75 /* GameScene.sks */; };
 		3F6DE8011EA6658D00D0EE75 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F6DE8001EA6658D00D0EE75 /* Actions.sks */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F6D932C1EBB8122002C9866 /* PlayerExplosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = PlayerExplosion.sks; path = "../../../../../Documents/flappyclone-master/flappyMock/sounds/PlayerExplosion.sks"; sourceTree = "<group>"; };
 		3F6DE7F91EA6658D00D0EE75 /* AtomicShift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AtomicShift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6DE7FC1EA6658D00D0EE75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F6DE7FE1EA6658D00D0EE75 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -80,6 +82,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F6D93291EBB80DA002C9866 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				3F6D932C1EBB8122002C9866 /* PlayerExplosion.sks */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
 		3F6DE7F01EA6658D00D0EE75 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +120,7 @@
 				3F6DE8041EA6658D00D0EE75 /* GameViewController.swift */,
 				3F6DE8061EA6658D00D0EE75 /* Main.storyboard */,
 				3F6DE8091EA6658D00D0EE75 /* Assets.xcassets */,
+				3F6D93291EBB80DA002C9866 /* Animations */,
 				3F6DE80B1EA6658D00D0EE75 /* LaunchScreen.storyboard */,
 				3F6DE80E1EA6658D00D0EE75 /* Info.plist */,
 			);
@@ -244,6 +255,7 @@
 				3F6DE8081EA6658D00D0EE75 /* Main.storyboard in Resources */,
 				3F6DE7FF1EA6658D00D0EE75 /* GameScene.sks in Resources */,
 				3F6DE80A1EA6658D00D0EE75 /* Assets.xcassets in Resources */,
+				3F6D932D1EBB8122002C9866 /* PlayerExplosion.sks in Resources */,
 				3F6DE80D1EA6658D00D0EE75 /* LaunchScreen.storyboard in Resources */,
 				3F6DE8011EA6658D00D0EE75 /* Actions.sks in Resources */,
 			);
@@ -517,6 +529,7 @@
 				3F6DE8291EA6658E00D0EE75 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3F6DE82A1EA6658E00D0EE75 /* Build configuration list for PBXNativeTarget "AtomicShiftTests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +538,7 @@
 				3F6DE82C1EA6658E00D0EE75 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3F6DE82D1EA6658E00D0EE75 /* Build configuration list for PBXNativeTarget "AtomicShiftUITests" */ = {
 			isa = XCConfigurationList;
@@ -533,6 +547,7 @@
 				3F6DE82F1EA6658E00D0EE75 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
